@@ -4,6 +4,7 @@
 \usepackage[english,russian]{babel}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{float}
 \graphicspath {{img/}}
 
 \title{\textbf{Лабораторная работа №6\\<<Помехоустойчивое кодирование. Код Хэмминга>>}}
@@ -38,7 +39,7 @@ $$
 
 \subsection{Исходные данные для задания}
 
-\begin{table}[h]
+\begin{table}[H]
     \resizebox{\textwidth}{!}{%
     \begin{tabular}{lllll}
     \hline
@@ -94,7 +95,7 @@ $$
 \section{Задание №3: Исправление ошибки с помощью кода Хэмминга}
 Расчётным путём, точнее вручную, определим, в каком разряде кода Хэмминга произошло искажение. 
 \subsection{Исходные данные для задания}
-\begin{table}[h]
+\begin{table}[H]
     \resizebox{\textwidth}{!}{%
     \begin{tabular}{llllllllllll}
     \hline
@@ -112,18 +113,41 @@ $$
 \subsection{Процесс вычисления искажённого бита}
 Найдём значения k-х битов на приеме:
 
-$k'_1 = i_3 \oplus i_5 \oplus i_7 \oplus i_9 \oplus i_{11} = 1 \oplus$ \\
+$k'_1 = i_3 \oplus i_5 \oplus i_7 \oplus i_9 \oplus i_{11} = 1 \oplus 0 \oplus 1 \oplus 0 \oplus 1 = 1$ \\
 
-$k'_2 = i_3 \oplus i_6 \oplus i_7 \oplus i_{10} \oplus i_{11} = 1 \oplus$ \\
+$k'_2 = i_3 \oplus i_6 \oplus i_7 \oplus i_{10} \oplus i_{11} = 1 \oplus 1 \oplus 1 \oplus 1 \oplus 0 = 0$ \\
 
-$k'_3 = i_5 \oplus i_6 \oplus i_7 \oplus i_{12} = 1 \oplus$ \\
+$k'_3 = i_5 \oplus i_6 \oplus i_7 \oplus i_{12} = 0 \oplus 1 \oplus 1 \oplus 1 = 1$ \\
 
-$k'_4 = i_9 \oplus i_{10} \oplus i_{11} \oplus i_{12}= 1 \oplus$
+$k'_4 = i_9 \oplus i_{10} \oplus i_{11} \oplus i_{12}= 0 \oplus 1 \oplus 0 \oplus 1 = 0$ \\
 
 k-е биты на передающей принимающей стороне отличаются, что
-свидетельствует о наличие ошибки.
+свидетельствует о наличии ошибки.\\
 
-\newpage
+Определим синдром $S = S_4 S_3 S_2 S_1$:\\
+
+$S_1 = k_1 \oplus k'_1 = 0 \oplus 1 = 1$\\
+
+$S_2 = k_2 \oplus k'_2 = 0 \oplus 0 = 0$\\
+
+$S_3 = k_3 \oplus k'_3 = 0 \oplus 1 = 1$\\
+
+$S_4 = k_4 \oplus k'_4 = 0 \oplus 1 = 1$\\
+
+$S = 0101_2 = 5_{10} =>$ 5-й бит искажен. Корректный код будет иметь вид:
+
+\begin{table}[H]
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llllllllllll}
+    \hline
+    \multicolumn{1}{|c|}{$i_8$} & \multicolumn{1}{c|}{$i_7$} & \multicolumn{1}{c|}{$i_6$} & \multicolumn{1}{c|}{$i_5$} & \multicolumn{1}{c|}{$k_4$} & \multicolumn{1}{c|}{$i_4$} & \multicolumn{1}{c|}{$i_3$} & \multicolumn{1}{c|}{$i_2$} & \multicolumn{1}{c|}{$k_3$} & \multicolumn{1}{c|}{$i_1$} & \multicolumn{1}{c|}{$k_2$} & \multicolumn{1}{c|}{$k_1$} \\ \hline
+    \multicolumn{1}{|c|}{1} & \multicolumn{1}{c|}{0} & \multicolumn{1}{c|}{1} & \multicolumn{1}{c|}{0} & \multicolumn{1}{c|}{0} & \multicolumn{1}{c|}{1} & \multicolumn{1}{c|}{1} & \multicolumn{1}{c|}{1} & \multicolumn{1}{c|}{0} & \multicolumn{1}{c|}{1} & \multicolumn{1}{c|}{0} & \multicolumn{1}{c|}{0} \\ \hline
+                           &                       &                       &                       &                       &                       &                       &                       &                       &                       &                       &                       \\
+                           &                       &                       &                       &                       &                       &                       &                       &                       &                       &                       &                      
+    \end{tabular}%
+    }
+    \end{table}
+
 \section{Задание №4: Моделирование работы кода Хэмминга}
 \subsection{Исходные данные для задания}
 Исходные данные приведены в таблице 2.
@@ -146,53 +170,28 @@ k-е биты на передающей принимающей стороне о
 \subsection{Результаты расчётов}
 Ниже представлена таблица помех и показаний схемы моделирования работы кода Хэмминга:
 
-\begin{table}[h]
+\begin{table}[H]
     \resizebox{\textwidth}{!}{
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{llll}
     \hline
-    \multicolumn{1}{|c|}{В каком бите искажение}     & \multicolumn{1}{c|}{Значения контрольных битов на приёмнике} & \multicolumn{1}{c|}{Синдром} \\ \hline
-    \multicolumn{1}{|c|}{$k_1$} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-    \multicolumn{1}{|c|}{$k_2$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_1$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$k_3$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_2$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_3$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$k_4$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_4$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_5$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_6$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_7$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_8$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
+    \multicolumn{1}{|c|}{В каком бите искажение}     & \multicolumn{1}{c|}{Значения контрольных битов на приёмнике} & \multicolumn{1}{c|}{Синдром} & \multicolumn{1}{c|}{HEX}\\ \hline
+    \multicolumn{1}{|c|}{$k_1$}                       &\multicolumn{1}{|c|}{0010}                        &\multicolumn{1}{|c|}{0001}            &\multicolumn{1}{|c|}{1}            \\ \hline
+    \multicolumn{1}{|c|}{$k_2$}                       &\multicolumn{1}{|c|}{0010}                        &\multicolumn{1}{|c|}{0010}            &\multicolumn{1}{|c|}{2}            \\ \hline
+    \multicolumn{1}{|c|}{$i_1$}                       &\multicolumn{1}{|c|}{1110}                        &\multicolumn{1}{|c|}{0011}            &\multicolumn{1}{|c|}{3}            \\ \hline
+    \multicolumn{1}{|c|}{$k_3$}                       &\multicolumn{1}{|c|}{0010}                        &\multicolumn{1}{|c|}{0100}            &\multicolumn{1}{|c|}{4}            \\ \hline
+    \multicolumn{1}{|c|}{$i_2$}                       &\multicolumn{1}{|c|}{1000}                        &\multicolumn{1}{|c|}{0101}            &\multicolumn{1}{|c|}{5}            \\ \hline
+    \multicolumn{1}{|c|}{$i_3$}                       &\multicolumn{1}{|c|}{0100}                        &\multicolumn{1}{|c|}{0110}            &\multicolumn{1}{|c|}{6}            \\ \hline
+    \multicolumn{1}{|c|}{$k_4$}                       &\multicolumn{1}{|c|}{1100}                        &\multicolumn{1}{|c|}{0111}            &\multicolumn{1}{|c|}{7}            \\ \hline
+    \multicolumn{1}{|c|}{$i_4$}                       &\multicolumn{1}{|c|}{0010}                        &\multicolumn{1}{|c|}{1000}            &\multicolumn{1}{|c|}{8}            \\ \hline
+    \multicolumn{1}{|c|}{$i_5$}                       &\multicolumn{1}{|c|}{1010}                        &\multicolumn{1}{|c|}{1001}            &\multicolumn{1}{|c|}{9}            \\ \hline
+    \multicolumn{1}{|c|}{$i_6$}                       &\multicolumn{1}{|c|}{0111}                        &\multicolumn{1}{|c|}{1010}            &\multicolumn{1}{|c|}{A}            \\ \hline
+    \multicolumn{1}{|c|}{$i_7$}                       &\multicolumn{1}{|c|}{1111}                        &\multicolumn{1}{|c|}{1011}            &\multicolumn{1}{|c|}{B}            \\ \hline
+    \multicolumn{1}{|c|}{$i_8$}                       &\multicolumn{1}{|c|}{0001}                        &\multicolumn{1}{|c|}{1100}            &\multicolumn{1}{|c|}{C}            \\ \hline
     \end{tabular}
     }
     \end{table} \\
 
 
-Проведём анализ результатов кода с проверкой на чётность:
-
-\begin{table}[h]
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|l|}
-    \hline
-    \multicolumn{1}{|c|}{В каком бите искажение}     & \multicolumn{1}{c|}{Бит чётности на кодере} & \multicolumn{1}{c|}{Бит чётности на приёме} \\ \hline
-    \multicolumn{1}{|c|}{$k_1$} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{} \\ \hline
-    \multicolumn{1}{|c|}{$k_2$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_1$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$k_3$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_2$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_3$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$k_4$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_4$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_5$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_6$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_7$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \multicolumn{1}{|c|}{$i_8$}                       &\multicolumn{1}{|c|}{}                       &\multicolumn{1}{|c|}{}                       \\ \hline
-    \end{tabular}%
-    }
-    \end{table} \\
-
-    
-Анализ результата кода с проверкой на чётность показывает наличие ошибки, однако не указывает на её местоположение.
 
 
 \textbf{Вывод:} В ходе работы были изучены теоретические аспекты помехоустойчивого кодирования, а также приобретены практические навыки моделирования работы кода Хэмминга.
